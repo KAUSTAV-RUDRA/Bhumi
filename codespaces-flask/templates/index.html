@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Student Record</title>
+</head>
+<body>
+    <h2>Upload Student Record Image</h2>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required><br><br>
+        <input type="submit" value="Upload">
+    </form>
+
+    {% if extracted %}
+        <h3>Extracted Data:</h3>
+        <ul>
+            <li><strong>Name:</strong> {{ extracted.Name }}</li>
+            <li><strong>Aadhaar:</strong> {{ extracted.Aadhaar }}</li>
+            <li><strong>Marks:</strong> {{ extracted.Marks }}</li>
+            <li><strong>DOB:</strong> {{ extracted.DOB }}</li>
+        </ul>
+    {% endif %}
+</body>
+</html>
