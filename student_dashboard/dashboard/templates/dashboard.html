@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Dashboard</title>
+  <style>
+    body {
+      font-family: Arial;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+    .container {
+      max-width: 700px;
+      background: #fff;
+      padding: 20px;
+      margin: auto;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    h2 {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Student Dashboard</h1>
+
+    {% if not student %}
+      <form method="get">
+        <label>Enter Student ID to continue:</label>
+        <input type="text" name="student_id" value="{{ lookup_id|default:'' }}" required />
+        <button type="submit">Fetch Details</button>
+      </form>
+    {% endif %}
+
+    {% if student or lookup_id %}
+      <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="student_id" value="{{ student.student_id|default:lookup_id }}" />
+
+        <label>Full Name:</label>
+        <input type="text" name="name" value="{{ student.name|default:'' }}" required />
+
+        <label>Email:</label>
+        <input type="email" name="email" value="{{ student.email|default:'' }}" required />
+
+        <label>Parent Name:</label>
+        <input type="text" name="parent_name" value="{{ student.parent_name|default:'' }}" required />
+
+        <label>Parent Phone:</label>
+        <input type="text" name="parent_phone" value="{{ student.parent_phone|default:'' }}" required />
+
+        <label>Academic Records:</label>
+        <textarea name="academic_records" rows="4">{{ student.academic_records|default:'' }}</textarea>
+
+        <button type="submit">Save Details</button>
+      </form>
+    {% endif %}
+
+    {% if student %}
+      <hr>
+      <h2>Saved Student Info</h2>
+      <p><strong>Name:</strong> {{ student.name }}</p>
+      <p><strong>Email:</strong> {{ student.email }}</p>
+      <p><strong>Parent:</strong> {{ student.parent_name }} ({{ student.parent_phone }})</p>
+      <p><strong>Academic Records:</strong> {{ student.academic_records }}</p>
+    {% endif %}
+  </div>
+</body>
+</html>
